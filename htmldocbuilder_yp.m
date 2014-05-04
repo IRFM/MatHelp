@@ -122,6 +122,8 @@ function search_path = htmldocbuilder_luke_yp(recursive_mode,root_path,search_pa
         end
     end
     %
+    web([root_path,'Help/index.html'])
+    %
     disp(['----> The weblink to the help is ','file://',root_path,'Help/index.html']);
     %
     cd(dirinit);%back to the initial directory
