@@ -4,6 +4,10 @@ if nargin == 2,
     template = 'help';
 end
 %
+if exist(fullfile(m2htmllib_path,'templates',template,'index.html'),'file')
+    delete(fullfile(m2htmllib_path,'templates',template,'index.html'));
+end
+%
 diary(fullfile(m2htmllib_path,'templates',template,'index.html')),% create index.html file in help template
 %
 disp('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"');
