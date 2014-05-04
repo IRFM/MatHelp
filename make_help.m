@@ -1,0 +1,162 @@
+function make_help(dirinit,overview_scripts,texfilelist,helptools,verbose)
+%MatHelp - Installation script for automatic generation of the on-line help 
+%
+%Installation script for automatic generation of the on-line documentation
+%(pdflatex and tex4html required for a complete build of the documentation)
+%
+% INPUT:
+%
+%	- verbose: display the output of the documentation build-up is not empty
+%
+% OUTPUT: none
+%
+%By Yves Peysson (CEA/DSM/IRFM, yves.peysson@cea.fr) and Joan Decker (CEA/DSM/IRFM, joan.decker@cea.fr)
+%
+if nargin == 0,
+    dirinit = pwd;
+    overview_scripts = '';
+    texfilelist = '';
+    helptools = '';
+    verbose = 1;
+elseif nargin == 1,
+    overview_scripts = '';
+    texfilelist = '';
+    helptools = '';
+    verbose = 1;
+elseif nargin == 2,
+    texfilelist = '';
+    helptools = '';
+    verbose = 1;
+elseif nargin == 3,
+    helptools = '';
+    verbose = 1;
+elseif nargin == 4,
+    verbose = 1;
+end
+%
+% Search htlatex, pdflztex, imagemagick, graphviz paths if not given
+%
+if isempty(helptools)
+    [s_htlatex,path_htlatex] = unix('which htlatex');%htlatex (TeXLive distribution)
+    [s_pdflatex,path_pdflatex] = unix('which pdflatex');%pdflatex (TeXLive distribution)
+    [s_imagemagick,path_imagemagick] = unix('which convert');%imagemagick
+    [s_graphviz,path_graphviz] = unix('which dot');%graphviz
+else
+    path_htlatex = helptools.htlatex;
+    path_pdflatex = helptools.pdflatex;
+    path_imagemagick = helptools.imagemagick;
+    path_graphviz = helptools.graphviz;
+end
+%
+if isempty(helptools),
+    if ~isempty(path_htlatex) && ~s_htlatex,
+        addpath(fileparts(path_htlatex));
+        disp(' ------------------------------------------------------------------------------------------------------')
+        disp(' -----> The path of TEXLIVE htlatex function has been succesfully found')
+        disp(' ------------------------------------------------------------------------------------------------------')    
+    else
+        disp(' ------------------------------------------------------------------------------------------------------')
+        disp(' -----> WARNING: the environment variable for TEXLIVE is not setup')
+        disp(' -----> The latex to html conversion is not possible.')
+        disp(' -----> The unix command ''which htlatex'' must give the path before building the help.')
+        disp(' ------------------------------------------------------------------------------------------------------')    
+    end
+    %
+    if ~isempty(path_pdflatex) && ~s_pdflatex,
+        addpath(fileparts(path_pdflatex));
+        disp(' ------------------------------------------------------------------------------------------------------')
+        disp(' -----> The path of TEXLIVE pdflatex function has been succesfully found')
+        disp(' ------------------------------------------------------------------------------------------------------')    
+    else
+        disp(' ------------------------------------------------------------------------------------------------------')
+        disp(' -----> WARNING: the environment variable for TEXLIVE is not setup')
+        disp(' -----> The latex to pdf conversion is not possible.')
+        disp(' -----> The unix command ''which pdflatex'' must give the path before building the help.')
+        disp(' ------------------------------------------------------------------------------------------------------')    
+    end
+    %
+    if ~isempty(path_imagemagick) && ~s_imagemagick,
+        addpath(fileparts(path_imagemagick));
+        disp(' ------------------------------------------------------------------------------------------------------')
+        disp(' -----> The path of IMAGEMAGICK convert function has been succesfully found')
+        disp(' ------------------------------------------------------------------------------------------------------')    
+    else
+        disp(' ------------------------------------------------------------------------------------------------------')
+        disp(' -----> WARNING: the environment variable for IMAGEMAGICK is not setup')
+        disp(' -----> The graphs cannot be displayed.')
+        disp(' -----> The unix command ''which convert'' must give the path before building the help.')
+        disp(' ------------------------------------------------------------------------------------------------------')    
+        return
+    end
+    %
+    if ~isempty(path_graphviz) && ~s_graphviz,
+        addpath(fileparts(path_graphviz));
+        disp(' ------------------------------------------------------------------------------------------------------')
+        disp(' -----> The path of GRAPHVIZ dot function has been succesfully found')
+        disp(' ------------------------------------------------------------------------------------------------------')        
+    else
+        disp(' ------------------------------------------------------------------------------------------------------')
+        disp(' -----> WARNING: the environment variable for GRAPHVIZ is not setup')
+        disp(' -----> The graphs cannot be displayed.')
+        disp(' -----> The unix command ''which dot'' must give the path before building the help.')
+        disp(' ------------------------------------------------------------------------------------------------------')    
+        return
+    end
+end
+%
+cd(dirinit);
+%
+[~,listDir] = get_all_filesname_yp(dirinit,{'.m','.f','.c','.php'});
+%
+search_path = listDir;
+%
+m2htmllib_path = fullfile(fileparts(which('make_help.m')),'m2html');
+%
+[~,dirname] = fileparts(dirinit);
+%
+make_index_html(dirname,m2htmllib_path);
+%
+if ~s_htlatex == 0 && ~s_pdflatex == 0 && ~s_imagemagick == 0,
+    texfilelist = '';
+end
+%
+make_master_tpl(dirname,texfilelist,m2htmllib_path)
+%
+for j = 1:length(search_path),
+    %
+    not_compatible_filename_list = check_filenames_yp(search_path{j});
+    %
+    if length(not_compatible_filename_list) > 0, 
+        %
+        disp('******************************** WARNING ***********************************')
+        disp('****************************************************************************')
+        for i = 1:length(not_compatible_filename_list),
+            disp([' -----> ',not_compatible_filename_list{i}]);
+        end
+        %
+        disp('****************************************************************************')
+        disp('****************************************************************************')
+        disp(' -----> Before building of the help,')
+        disp(' 1) Rename all the files identified with the wrong name.')
+        disp(' 2) Check the dependencies.')
+        disp(' 3) Commit all the changes in the CVS repository.')
+        disp('    WARNING: the whole history of the files whose name has changed must be saved.')
+        disp('****************************************************************************')
+        disp('****************************************************************************')
+        %
+        return
+    end
+end
+%
+excludedfoldernames = {};
+htmldocbuilder_yp('off',dirinit,search_path,excludedfoldernames,overview_scripts,verbose);%build html doc
+%
+pause(2);
+%
+if ~s_htlatex == 0 && ~s_pdflatex == 0 && ~s_imagemagick == 0,
+    return
+else
+    pdfhtlatex_yp(dirinit,texfilelist,verbose);%build html and pdf doc from tex files
+end
+%
+
