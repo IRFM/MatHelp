@@ -1,6 +1,6 @@
-function make_master_tpl(dirname,texfilelist,m2htmllib_path,template)%
+function make_master_tpl(dirinit,dirname,texfilelist,m2htmllib_path,template)%
 %
-if nargin == 3,
+if nargin == 4,
     template = 'help';
 end
 %
@@ -24,13 +24,56 @@ disp('  <link type="text/css" rel="stylesheet" href="{MASTERPATH}m2html.css">');
 disp('</head>');
 disp('<body>');
 disp('<a name="_top"></a>');
-disp(['<h1><A HREF="Imperial_March.html" target=function>',dirname,' package</A></h1>']);
-disp('');
-if ~isempty(texfilelist),
-    disp('<P align=center><A href="codeoverview.html" target=function>Code overview & TeX documentation</A></P>');
+%
+if exist(fullfile(dirinit,'TUTORIAL','package.html'),'file')
+    disp(['<h1><A HREF="',dirinit,'/Help/package.html" target=function>',dirname,' package</A></h1>']);
 else
-    disp('<P align=center><A href="codeoverview.html" target=function>Code overview</A></P>');
+    disp(['<h1>',dirname,' package</h1>']);
 end
+%
+disp('');
+%
+io = 1;
+overview_scripts = '';
+%
+if exist(fullfile(dirinit,'INSTALL.m'),'file')
+    overview_scripts(io).path = fullfile(dirinit,'INSTALL.m');overview_scripts(io).format = '';
+    io = io + 1;
+end
+%
+if exist(fullfile(dirinit,'README.m'),'file')
+    overview_scripts(io).path = fullfile(dirinit,'README.m');overview_scripts(io).format = '';
+    io = io + 1;
+end
+%
+if exist(fullfile(dirinit,'VERSIONS.m'),'file')
+    overview_scripts(io).path = fullfile(dirinit,'VERSIONS.m');overview_scripts(io).format = '';
+    io = io + 1;
+end
+%
+if exist(fullfile(dirinit,'AUTHORS.m'),'file')
+    overview_scripts(io).path = fullfile(dirinit,'AUTHORS.m');overview_scripts(io).format = '';
+end
+%
+master_title = '';
+%
+if ~isempty(overview_scripts)
+    master_title = [master_title,'Overview'];
+end
+%
+if ~isempty(master_title) && exist(fullfile(dirinit,'TUTORIAL'),'dir')
+    master_title = [master_title,' & Tutorial'];
+elseif isempty(master_title) && exist(fullfile(dirinit,'TUTORIAL'),'dir')
+    master_title = [master_title,'Tutorial'];
+end
+%
+if ~isempty(master_title) && ~isempty(texfilelist)
+    master_title = [master_title,' & TeX Doc'];
+elseif isempty(master_title) && ~isempty(texfilelist)
+    master_title = [master_title,'TeX Doc'];
+end
+%
+disp(['<P align=center><A href="codeoverview.html" target=function>',master_title,'</A></P>']);
 disp('');
 disp('<h2>Matlab Directories</h2>');
 disp('<ul style="list-style-image:url({MASTERPATH}matlabicon.gif)">');
