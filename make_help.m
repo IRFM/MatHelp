@@ -1,4 +1,4 @@
-function make_help(dirinit,overview_scripts,texfilelist,helptools,verbose)
+function make_help(dirinit,texfilelist,excludedfoldernames,helptools,verbose)
 %MatHelp - Installation script for automatic generation of the on-line help 
 %
 %Installation script for automatic generation of the on-line documentation
@@ -14,17 +14,17 @@ function make_help(dirinit,overview_scripts,texfilelist,helptools,verbose)
 %
 if nargin == 0,
     dirinit = pwd;
-    overview_scripts = '';
     texfilelist = '';
+    excludedfoldernames = '';
     helptools = '';
     verbose = 1;
 elseif nargin == 1,
-    overview_scripts = '';
     texfilelist = '';
+    excludedfoldernames = '';
     helptools = '';
     verbose = 1;
 elseif nargin == 2,
-    texfilelist = '';
+    excludedfoldernames = '';
     helptools = '';
     verbose = 1;
 elseif nargin == 3,
@@ -36,16 +36,21 @@ end
 %
 % Search htlatex, pdflztex, imagemagick, graphviz paths if not given
 %
+path_htlatex = '';s_htlatex = 1;
+path_pdflatex = '';s_pdflatex = 1;
+path_imagemagick = '';s_imagemagick = 1;
+path_graphviz = '';s_graphviz = 1;
+%
 if isempty(helptools)
     [s_htlatex,path_htlatex] = unix('which htlatex');%htlatex (TeXLive distribution)
     [s_pdflatex,path_pdflatex] = unix('which pdflatex');%pdflatex (TeXLive distribution)
     [s_imagemagick,path_imagemagick] = unix('which convert');%imagemagick
     [s_graphviz,path_graphviz] = unix('which dot');%graphviz
 else
-    path_htlatex = helptools.htlatex;
-    path_pdflatex = helptools.pdflatex;
-    path_imagemagick = helptools.imagemagick;
-    path_graphviz = helptools.graphviz;
+    if isfield(helptools,'htlatex'),path_htlatex = helptools.htlatex;s_htlatex = 0;end
+    if isfield(helptools,'pdflatex'),path_pdflatex = helptools.pdflatex;s_pdflatex = 0;end
+    if isfield(helptools,'imagemagick'),path_imagemagick = helptools.imagemagick;s_imagemagick = 0;end
+    if isfield(helptools,'graphviz'),path_graphviz = helptools.graphviz;s_graphviz = 0;end
 end
 %
 if isempty(helptools),
@@ -106,21 +111,25 @@ end
 %
 cd(dirinit);
 %
-[~,listDir] = get_all_filesname_yp(dirinit,{'.m','.f','.c','.php'});
+[~,listDir] = get_all_filesname_yp(dirinit,{'.m','.f','.c','.php'},Inf,excludedfoldernames);
 %
 search_path = listDir;
 %
 m2htmllib_path = fullfile(fileparts(which('make_help.m')),'m2html');
 %
+if strcmp(dirinit(end),'/'),dirinit = dirinit(1:end-1);end
+%
 [~,dirname] = fileparts(dirinit);
 %
 make_index_html(dirname,m2htmllib_path);
 %
+overview_scripts = make_codeoverview_html(dirinit,dirname,texfilelist,m2htmllib_path)
+%
 if ~s_htlatex == 0 && ~s_pdflatex == 0 && ~s_imagemagick == 0,
-    texfilelist = '';
+    texfilelist = '';%no tex file can be used
 end
 %
-make_master_tpl(dirname,texfilelist,m2htmllib_path)
+make_master_tpl(dirinit,dirname,texfilelist,m2htmllib_path)
 %
 for j = 1:length(search_path),
     %
@@ -148,15 +157,23 @@ for j = 1:length(search_path),
     end
 end
 %
-excludedfoldernames = {};
 htmldocbuilder_yp('off',dirinit,search_path,excludedfoldernames,overview_scripts,verbose);%build html doc
 %
 pause(2);
 %
+if exist(fullfile(dirinit,'TUTORIAL'),'dir'),
+    copyfile(fullfile(dirinit,'TUTORIAL'),fullfile(dirinit,'Help'))
+end
+%
 if ~s_htlatex == 0 && ~s_pdflatex == 0 && ~s_imagemagick == 0,
     return
 else
-    pdfhtlatex_yp(dirinit,texfilelist,verbose);%build html and pdf doc from tex files
+	for itex = 1:length(texfilelist)
+        texlist{itex} = fullfile(dirinit,[texfilelist(itex).file,'.tex']);
+    end
+    %
+    cd(dirinit);
+    pdfhtlatex_yp(dirinit,texlist,verbose);%build html and pdf doc from tex files
 end
 %
 
