@@ -1,5 +1,5 @@
-function search_path = htmldocbuilder_luke_yp(recursive_mode,root_path,search_path,excludedfoldernames,overview_scripts,verbose)
-%LUKE - HTML help builder
+function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,excludedfoldernames,overview_scripts,verbose)
+%MatHelp - HTML help builder
 %
 % Create dynamically all the help in html format from *.m, *.c, *.f and *.h text files. Recognize binary files. 
 % If a TODO comment is written somewhere, it is considered in the links.
@@ -70,7 +70,7 @@ function search_path = htmldocbuilder_luke_yp(recursive_mode,root_path,search_pa
     %
     dirinit = pwd;%initial directory
     %
-    if isempty(search_path),
+    if isempty(search_path)
         search_path = dirscan_yp(root_path,search_path,excludedfoldernames,recursive_mode);%Search_path set-up
     end
     %
@@ -124,7 +124,9 @@ function search_path = htmldocbuilder_luke_yp(recursive_mode,root_path,search_pa
     %
     web([root_path,'Help/index.html'])
     %
+    disp('*****************************************************************************************');
     disp(['----> The weblink to the help is ','file://',root_path,'Help/index.html']);
+    disp('*****************************************************************************************');
     %
     cd(dirinit);%back to the initial directory
     %
@@ -180,8 +182,19 @@ function [search_path] = dirscan_yp(root_path,search_path,excludedfoldernames,re
     %
     for ii = 1:length(dirlist),
         if dirlist(ii).isdir == 1 && ~strcmp(dirlist(ii).name(1),'.') && ~strcmp(dirlist(ii).name,'CVS') && ~strcmp(dirlist(ii).name,'Doc') && ~strcmp(dirlist(ii).name,'Help'),
-            search_path = [search_path,[root_path,dirlist(ii).name]];
-            nsearch_path = nsearch_path + 1;%a valid new directory has been found
+            flag_dir = 1;
+            for ie = 1:length(excludedfoldernames),
+                if strcmp(dirlist(ii).name,excludedfoldernames{ie})
+                    keyboard
+                    flag_dir = 0;
+                    break
+                end
+            end
+            %
+            if flag_dir,
+                search_path = [search_path,[root_path,dirlist(ii).name]];
+                nsearch_path = nsearch_path + 1;%a valid new directory has been found
+            end
         end
     end 
     %
