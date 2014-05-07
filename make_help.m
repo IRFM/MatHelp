@@ -168,12 +168,15 @@ end
 if ~s_htlatex == 0 && ~s_pdflatex == 0 && ~s_imagemagick == 0,
     return
 else
+    texlist = '';
 	for itex = 1:length(texfilelist)
         texlist{itex} = fullfile(dirinit,[texfilelist(itex).file,'.tex']);
     end
     %
-    cd(dirinit);
-    pdfhtlatex_yp(dirinit,texlist,verbose);%build html and pdf doc from tex files
+    if ~isempty(texlist)
+        cd(dirinit);
+        pdfhtlatex_yp(dirinit,texlist,verbose);%build html and pdf doc from tex files
+    end
 end
 %
 
