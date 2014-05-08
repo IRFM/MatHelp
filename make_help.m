@@ -130,7 +130,7 @@ if strcmp(dirinit(end),'/'),dirinit = dirinit(1:end-1);end
 %
 make_index_html(dirname,m2htmllib_path);
 %
-overview_scripts = make_codeoverview_html(dirinit,dirname,texfilelist,m2htmllib_path)
+overview_scripts = make_codeoverview_html(dirinit,dirname,redminepath,texfilelist,m2htmllib_path)
 %
 if ~s_htlatex == 0 && ~s_pdflatex == 0 && ~s_imagemagick == 0,
     texfilelist = '';%no tex file can be used

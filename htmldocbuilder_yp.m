@@ -96,7 +96,7 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,re
     end
     %
     try
-        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',©,'recursive','off','global','on', 'template','help','index','menu','graph','on','todo','on');
+        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',redminepath,'recursive','off','global','on', 'template','help','index','menu','graph','on','todo','on');
     catch
         m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',redminepath,'recursive','off','global','on', 'template','help','index','menu','graph','off','todo','on');%if graphviz not installed
         %
