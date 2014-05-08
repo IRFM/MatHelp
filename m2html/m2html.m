@@ -103,6 +103,7 @@ msgInvalidPair = 'Bad value for argument: ''%s''';
 options = struct('verbose', 1,...
 				 'mFiles', {{'.'}},...
 				 'htmlDir', '.',...
+                 'redmineDir', '.',...
 				 'recursive', 0,...
 				 'source', 1,...
 				 'syntaxHighlighting', 1,...
@@ -166,7 +167,17 @@ for i=1:2:length(paramlist)
 			else
 				error(sprintf(msgInvalidPair,pname));
             end
-		case 'recursive'
+		case 'redminedir'
+			if ischar(pvalue)
+				if isempty(pvalue),
+					options.redmineDir = '.';
+				else
+					options.redmineDir = pvalue;
+				end
+			else
+				error(sprintf(msgInvalidPair,pname));
+            end 
+        case 'recursive'
 			if strcmpi(pvalue,'on')
 				options.recursive = 1;
 			elseif strcmpi(pvalue,'off')
@@ -294,6 +305,7 @@ if ~options.load
         lmfile = 0;
         lhfile = 0;
         lsfile = 0;
+        lpfile = 0;
         for i=1:length(mfiles)
             [dummy, dummmy,ext] = fileparts(mfiles{i});
             switch ext
@@ -307,6 +319,8 @@ if ~options.load
                      lmfile = lmfile + 1;
                 case {'.sh'}
                      lsfile = lsfile + 1;
+                case {'.php'}
+                     lpfile = lpfile + 1;
             end
         end
         %
@@ -315,6 +329,7 @@ if ~options.load
         fprintf('Found %d FORTRAN language -files.\n',lffile);
         fprintf('Found %d Header - files.\n',lhfile);
         fprintf('Found %d Shell - files.\n',lsfile);
+        fprintf('Found %d PHP - files.\n',lsfile);
     end
 	mfiles = sort(mfiles); % sort list of M-files in dictionary order
 end
@@ -492,6 +507,8 @@ for i=1:prod(size(ind))
 		tpl = set(tpl,'var','idcolumns','');
 	end
 end
+tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
+
 
 %- Print the template in the HTML file
 tpl = parse(tpl,'OUT','TPL_MASTER');
@@ -545,6 +562,7 @@ tpl = set(tpl,'block','TPL_MDIR','todolist','todolists');
 tpl = set(tpl,'block','TPL_MDIR','graph','graphs');
 tpl = set(tpl,'var','DATE',[datestr(now,8) ' ' datestr(now,1) ' ' ...
 							datestr(now,13)]);
+tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
 
 for i=1:length(mdir)
 	%- Open for writing each output directory index file
@@ -730,6 +748,7 @@ if options.todo
 			tpl = set(tpl,'var','INDEX',[options.indexFile options.extension]);
 			tpl = set(tpl,'var','MASTERPATH', backtomaster(mdir{i}));
 			tpl = set(tpl,'var','MDIR',       mdir{i});
+            tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
 			tpl = set(tpl,'var','filelists',  '');
 	
 			for k=1:length(mfilestodo)
@@ -769,6 +788,7 @@ if options.graph
 	tpl = set(tpl,'file','TPL_GRAPH',tpl_graph);
 	tpl = set(tpl,'var','DATE',[datestr(now,8) ' ' datestr(now,1) ' ' ...
 								datestr(now,13)]);
+    tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
 	
 	for i=1:length(mdir)
 		mdotfile = fullfile(options.htmlDir,mdir{i},[dotbase '.dot']);
@@ -911,6 +931,7 @@ for i=1:length(mdir)
 			tpl = set(tpl,'var','NAME',             names{j});
 			tpl = set(tpl,'var','H1LINE',           h1line{j});
 			tpl = set(tpl,'var','scriptfile',       '');
+            tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
 			if isempty(synopsis{j})
 				tpl = set(tpl,'var','SYNOPSIS',get(tpl,'var','script'));
 			else

@@ -29,6 +29,6 @@
 <div class="fragment"><pre class="comment">{PACKAGES}</pre></div>
 
 
-<hr><address>Generated on {DATE} by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2003</address>
+<hr><address>Community support and wiki are available on <strong><a href="{REDMINEPATH}" target="_blank">Redmine</a></strong>.</address>
 </body>
 </html>

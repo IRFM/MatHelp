@@ -1,4 +1,4 @@
-function make_help(dirinit,texfilelist,excludedfoldernames,helptools,verbose)
+function make_help(dirinit,redminepath,texfilelist,excludedfoldernames,helptools,verbose)
 %MatHelp - Installation script for automatic generation of the on-line help 
 %
 %Installation script for automatic generation of the on-line documentation
@@ -14,23 +14,30 @@ function make_help(dirinit,texfilelist,excludedfoldernames,helptools,verbose)
 %
 if nargin == 0,
     dirinit = pwd;
+    redminepath = '.';
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
     verbose = 1;
 elseif nargin == 1,
+    redminepath = '.';
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
     verbose = 1;
 elseif nargin == 2,
+    texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
     verbose = 1;
 elseif nargin == 3,
+    excludedfoldernames = '';
     helptools = '';
     verbose = 1;
 elseif nargin == 4,
+    helptools = '';
+    verbose = 1;
+elseif nargin == 5,
     verbose = 1;
 end
 %
@@ -157,7 +164,7 @@ for j = 1:length(search_path),
     end
 end
 %
-htmldocbuilder_yp('off',dirinit,search_path,excludedfoldernames,overview_scripts,verbose);%build html doc
+htmldocbuilder_yp('off',dirinit,search_path,redminepath,excludedfoldernames,overview_scripts,verbose);%build html doc
 %
 pause(2);
 %

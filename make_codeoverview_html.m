@@ -1,6 +1,6 @@
-function [overview_scripts] = make_codeoverview_html(dirinit,dirname,texfilelist,m2htmllib_path,template)%
+function [overview_scripts] = make_codeoverview_html(dirinit,dirname,redminepath,texfilelist,m2htmllib_path,template)%
 %
-if nargin == 4,
+if nargin == 5,
     template = 'help';
 end
 %
@@ -100,6 +100,8 @@ if ~isempty(texfilelist)
     end
     disp('');
 end
+%
+disp(['<hr><address>Community support and wiki are available on <strong><a href="',redminepath,'" target="_blank">Redmine</a>.</address>']);
 %
 disp('</body>');
 disp('</html>');
