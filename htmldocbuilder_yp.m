@@ -41,17 +41,17 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,re
     if nargin == 1,
         recursive_mode = 'on';
         root_path = '';
-        verbose = '';
+        verbose = 'off';
     end   
     if nargin == 2,
         root_path = '';
-        verbose = '';
+        verbose = 'off';
     end
     if nargin <=3,
         search_path = {};
         redminepath = '.';
         excludedfoldernames = {};
-        verbose = '';
+        verbose = 'off';
     end
     %
     if isempty(root_path),
@@ -91,8 +91,6 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,re
     %
     if isempty(verbose),
         verbose = 'off';
-    else
-        verbose = 'on';
     end
     %
     try
@@ -125,7 +123,9 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,re
         end
     end
     %
-    web([root_path,'Help/index.html'])
+    if strcmp(verbose,'on'),
+        web([root_path,'Help/index.html'])
+    end
     %
     disp('*****************************************************************************************');
     disp(['----> The weblink to the help is ','file://',root_path,'Help/index.html']);

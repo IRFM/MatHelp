@@ -18,27 +18,27 @@ if nargin == 0,
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
-    verbose = 1;
+    verbose = 'off';
 elseif nargin == 1,
     redminepath = '.';
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
-    verbose = 1;
+    verbose = 'off';
 elseif nargin == 2,
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
-    verbose = 1;
+    verbose = 'off';
 elseif nargin == 3,
     excludedfoldernames = '';
     helptools = '';
-    verbose = 1;
+    verbose = 'off';
 elseif nargin == 4,
     helptools = '';
-    verbose = 1;
+    verbose = 'off';
 elseif nargin == 5,
-    verbose = 1;
+    verbose = 'off';
 end
 %
 % Search htlatex, pdflztex, imagemagick, graphviz paths if not given
