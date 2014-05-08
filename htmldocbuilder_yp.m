@@ -1,4 +1,4 @@
-function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,excludedfoldernames,overview_scripts,verbose)
+function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,redminepath,excludedfoldernames,overview_scripts,verbose)
 %MatHelp - HTML help builder
 %
 % Create dynamically all the help in html format from *.m, *.c, *.f and *.h text files. Recognize binary files. 
@@ -14,6 +14,8 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,ex
 %       (default: local directory)
 %   - search_path: list subdirectories to be scanned (relative path to root_path) (cells of strings)
 %       (default: all subdirectories are scanned recursively)
+%   - redmine_path: path to the redmine server (string)
+%       (default: local directory)
 %   - excludedfoldernames: list excluded folder names is the build-in search_path (cells of strings)
 %       (default: empty)
 %   - overview_scripts: list of scripts to be put in the overview html file (structure)
@@ -34,7 +36,7 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,ex
 % by Y. PEYSSON (CEA/DSM/IRFM, yves.peysson@cea.fr) and J. DECKER (CEA/DSM/IRFM, joan.decker@cea.fr)
 %
     if nargin == 0,
-        error('The modified m2html library absolute path must be specified as input parameter for htmldocbuilder_luke_yp !');
+        error('The modified m2html library absolute path must be specified as input parameter for htmldocbuilder_yp !');
     end
     if nargin == 1,
         recursive_mode = 'on';
@@ -47,12 +49,13 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,ex
     end
     if nargin <=3,
         search_path = {};
+        redminepath = '.';
         excludedfoldernames = {};
         verbose = '';
     end
     %
     if isempty(root_path),
-        root_path = [pwd,filesep];%Working in the local directories where htmldocbuilder_luke_yp is launched
+        root_path = [pwd,filesep];%Working in the local directories where htmldocbuilder_yp is launched
     end
     %
     if ~strcmp(root_path(end),filesep),
@@ -93,13 +96,13 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,ex
     end
     %
     try
-        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'recursive','off','global','on', 'template','help','index','menu','graph','on','todo','on');
+        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',©,'recursive','off','global','on', 'template','help','index','menu','graph','on','todo','on');
     catch
-        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'recursive','off','global','on', 'template','help','index','menu','graph','off','todo','on');%if graphviz not installed
+        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',redminepath,'recursive','off','global','on', 'template','help','index','menu','graph','off','todo','on');%if graphviz not installed
         %
         disp('WARNING: Graphs have not been generated, since the ''graphviz'' maker is not installed on your computer.');
         disp('WARNING: Download ''graphviz'' maker from www.graphviz.org, and install it first.');
-        disp('WARNING: Execute htmldocbuilder_luke_yp MatLab script do rebuild the LUKE help.');
+        disp('WARNING: Execute htmldocbuilder_yp MatLab script do rebuild the help.');
     end    
     %
     %
@@ -135,7 +138,7 @@ end
 
 
 function [search_path] = dirscan_yp(root_path,search_path,excludedfoldernames,recursive_mode)
-%LUKE - Recursive directory scan
+%MatHelp - Recursive directory scan
 %
 % Recursive scan of directory tree starting from scanfolder level
 %
