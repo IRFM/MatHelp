@@ -1,4 +1,4 @@
-function make_help(dirinit,redminepath,texfilelist,excludedfoldernames,helptools,verbose)
+function make_help(verbose,dirinit,redminepath,texfilelist,excludedfoldernames,helptools)
 %MatHelp - Installation script for automatic generation of the on-line help 
 %
 %Installation script for automatic generation of the on-line documentation
@@ -13,32 +13,32 @@ function make_help(dirinit,redminepath,texfilelist,excludedfoldernames,helptools
 %By Yves Peysson (CEA/DSM/IRFM, yves.peysson@cea.fr) and Joan Decker (CEA/DSM/IRFM, joan.decker@cea.fr)
 %
 if nargin == 0,
+    verbose = 'off';
     dirinit = pwd;
     redminepath = '.';
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
-    verbose = 'off';
 elseif nargin == 1,
+    dirinit = pwd;
     redminepath = '.';
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
-    verbose = 'off';
 elseif nargin == 2,
+    redminepath = '.';
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
-    verbose = 'off';
 elseif nargin == 3,
+    texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
-    verbose = 'off';
 elseif nargin == 4,
+    excludedfoldernames = '';
     helptools = '';
-    verbose = 'off';
 elseif nargin == 5,
-    verbose = 'off';
+    helptools = '';
 end
 %
 % Search htlatex, pdflztex, imagemagick, graphviz paths if not given
@@ -48,21 +48,39 @@ path_pdflatex = '';s_pdflatex = 1;
 path_imagemagick = '';s_imagemagick = 1;
 path_graphviz = '';s_graphviz = 1;
 %
+PATH_init = getenv('PATH');
+%
 if isempty(helptools)
-    [s_htlatex,path_htlatex] = unix('which htlatex');%htlatex (TeXLive distribution)
-    [s_pdflatex,path_pdflatex] = unix('which pdflatex');%pdflatex (TeXLive distribution)
-    [s_imagemagick,path_imagemagick] = unix('which convert');%imagemagick
-    [s_graphviz,path_graphviz] = unix('which dot');%graphviz
+    rootdir = {'','/usr/texbin/','/usr/local/bin/','/usr/bin/','/opt/local/bin/','/opt/bin/'};
+    %
+    for ir = 1:length(rootdir),
+        if s_htlatex,
+            [s_htlatex,path_htlatex] = unix(['which ',rootdir{ir},'htlatex']);%htlatex (TeXLive distribution)
+        end
+        %
+        if s_pdflatex,
+            [s_pdflatex,path_pdflatex] = unix(['which ',rootdir{ir},'pdflatex']);%pdflatex (TeXLive distribution)
+        end
+        %
+        if s_imagemagick,
+            [s_imagemagick,path_imagemagick] = unix(['which ',rootdir{ir},'convert']);%imagemagick
+        end
+        %
+        if s_graphviz,
+            [s_graphviz,path_graphviz] = unix(['which ',rootdir{ir},'dot']);%graphviz
+        end
+        %
+    end
 else
-    if isfield(helptools,'htlatex'),path_htlatex = helptools.htlatex;s_htlatex = 0;end
-    if isfield(helptools,'pdflatex'),path_pdflatex = helptools.pdflatex;s_pdflatex = 0;end
-    if isfield(helptools,'imagemagick'),path_imagemagick = helptools.imagemagick;s_imagemagick = 0;end
-    if isfield(helptools,'graphviz'),path_graphviz = helptools.graphviz;s_graphviz = 0;end
+    if isfield(helptools,'htlatex'),path_htlatex = helptools.htlatex;s_htlatex = 0;setenv('PATH',[getenv('PATH'),':',fileparts(path_htlatex)]);end
+    if isfield(helptools,'pdflatex'),path_pdflatex = helptools.pdflatex;s_pdflatex = 0; setenv('PATH',[getenv('PATH'),':',fileparts(path_pdflatex)]);end
+    if isfield(helptools,'imagemagick'),path_imagemagick = helptools.imagemagick;s_imagemagick = 0;setenv('PATH',[getenv('PATH'),':',fileparts(path_imagemagick)]);end
+    if isfield(helptools,'graphviz'),path_graphviz = helptools.graphviz;s_graphviz = 0;setenv('PATH',[getenv('PATH'),':',fileparts(path_graphviz)]);end
 end
 %
 if isempty(helptools),
     if ~isempty(path_htlatex) && ~s_htlatex,
-        addpath(fileparts(path_htlatex));
+        setenv('PATH',[getenv('PATH'),':',fileparts(path_htlatex)])
         disp(' ------------------------------------------------------------------------------------------------------')
         disp(' -----> The path of TEXLIVE htlatex function has been succesfully found')
         disp(' ------------------------------------------------------------------------------------------------------')    
@@ -75,7 +93,7 @@ if isempty(helptools),
     end
     %
     if ~isempty(path_pdflatex) && ~s_pdflatex,
-        addpath(fileparts(path_pdflatex));
+        setenv('PATH',[getenv('PATH'),':',fileparts(path_pdflatex)])
         disp(' ------------------------------------------------------------------------------------------------------')
         disp(' -----> The path of TEXLIVE pdflatex function has been succesfully found')
         disp(' ------------------------------------------------------------------------------------------------------')    
@@ -88,7 +106,7 @@ if isempty(helptools),
     end
     %
     if ~isempty(path_imagemagick) && ~s_imagemagick,
-        addpath(fileparts(path_imagemagick));
+        setenv('PATH',[getenv('PATH'),':',fileparts(path_imagemagick)])
         disp(' ------------------------------------------------------------------------------------------------------')
         disp(' -----> The path of IMAGEMAGICK convert function has been succesfully found')
         disp(' ------------------------------------------------------------------------------------------------------')    
@@ -102,7 +120,7 @@ if isempty(helptools),
     end
     %
     if ~isempty(path_graphviz) && ~s_graphviz,
-        addpath(fileparts(path_graphviz));
+        setenv('PATH',[getenv('PATH'),':',fileparts(path_graphviz)])
         disp(' ------------------------------------------------------------------------------------------------------')
         disp(' -----> The path of GRAPHVIZ dot function has been succesfully found')
         disp(' ------------------------------------------------------------------------------------------------------')        
@@ -186,4 +204,5 @@ else
     end
 end
 %
+setenv('PATH',PATH_init);
 
