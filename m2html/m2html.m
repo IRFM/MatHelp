@@ -820,44 +820,39 @@ if options.graph
             else
                 render = ' ';
             end
-
-%            keyboard
-			%eval(['!' dot_exec ' -Tcmap -Tpng' render mdotfile ...
-			%	' -o ' fullfile(options.htmlDir,mdir{i},[dotbase '.map']) ... 
-			%	' -o ' fullfile(options.htmlDir,mdir{i},[dotbase '.png'])])
-            
-            [s,w] =  unix([dot_exec,'  -Tcmap -Tpng',render mdotfile,' -o ',fullfile(options.htmlDir,mdir{i},[dotbase '.map']),' -o ',fullfile(options.htmlDir,mdir{i},[dotbase '.png'])]);
-            
-            if ~isempty(w),
-            	disp('********************************************************************************')
-            	disp('************************ PROBLEM WITH DOT COMMAND ******************************')
-            	disp('********************************************************************************')
-            	disp(s)
-                disp(w)
-                !which dot
-                disp([dot_exec,'  -Tcmap -Tpng',render mdotfile,' -o ',fullfile(options.htmlDir,mdir{i},[dotbase '.map']),' -o ',fullfile(options.htmlDir,mdir{i},[dotbase '.png'])]);
-                disp('********************************************************************************')
-            	disp('********************************************************************************')
-                disp('********************************************************************************')
-                return;
-            end
-			% use '!' rather than 'system' for backward compability
+            %
+            [s,w] =  unix([dot_exec,'  -Tcmap -Tpng',render mdotfile,' -o ',fullfile(options.htmlDir,mdir{i},[dotbase '.map']),' -o ',fullfile(options.htmlDir,mdir{i},[dotbase '.png'])]); 
+            %
         catch
 			fprintf('failed.');
         end
+        %
 		fprintf('\n');
-		fid = openfile(fullfile(options.htmlDir,mdir{i},...
-			[dotbase options.extension]),'w');
-		tpl = set(tpl,'var','INDEX',[options.indexFile options.extension]);
-		tpl = set(tpl,'var','MASTERPATH', backtomaster(mdir{i}));
-		tpl = set(tpl,'var','MDIR',       mdir{i});
-		tpl = set(tpl,'var','GRAPH_IMG',  [dotbase '.png']);
-		fmap = openfile(fullfile(options.htmlDir,mdir{i},[dotbase '.map']),'r');
-		tpl = set(tpl,'var','GRAPH_MAP',  fscanf(fmap,'%c'));
-		fclose(fmap);
-		tpl = parse(tpl,'OUT','TPL_GRAPH');
-		fprintf(fid,'%s', get(tpl,'OUT'));
-		fclose(fid);
+        %
+        if isempty(w),
+            fid = openfile(fullfile(options.htmlDir,mdir{i},[dotbase options.extension]),'w');
+            tpl = set(tpl,'var','INDEX',[options.indexFile options.extension]);
+            tpl = set(tpl,'var','MASTERPATH', backtomaster(mdir{i}));
+            tpl = set(tpl,'var','MDIR',       mdir{i});
+            tpl = set(tpl,'var','GRAPH_IMG',  [dotbase '.png']);
+            fmap = openfile(fullfile(options.htmlDir,mdir{i},[dotbase '.map']),'r');
+            tpl = set(tpl,'var','GRAPH_MAP',  fscanf(fmap,'%c'));
+            fclose(fmap);
+            tpl = parse(tpl,'OUT','TPL_GRAPH');
+            fprintf(fid,'%s', get(tpl,'OUT'));
+            fclose(fid);
+        else
+            disp('********************************************************************************')
+            disp('************************ PROBLEM WITH DOT COMMAND ******************************')
+            disp('********************************************************************************')
+            disp(s)
+            disp(w)
+            !which dot
+            disp([dot_exec,'  -Tcmap -Tpng',render mdotfile,' -o ',fullfile(options.htmlDir,mdir{i},[dotbase '.map']),' -o ',fullfile(options.htmlDir,mdir{i},[dotbase '.png'])]);
+            disp('********************************************************************************')
+            disp('********************************************************************************')
+            disp('********************************************************************************')
+        end
 	end
 end
 
@@ -907,6 +902,11 @@ for i=1:length(mdir)
 			end
 			fid = openfile(curfile,'w');
             			
+            
+            
+            
+            
+            
 			%- Open for reading the M-file
 			fid2 = openfile(mfiles{j},'r');
             
