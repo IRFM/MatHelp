@@ -1,4 +1,4 @@
-function make_help(verbose,dirinit,redminepath,texfilelist,excludedfoldernames,helptools)
+function make_help(verbose,dirinit,outputpath,texfilelist,excludedfoldernames,helptools)
 %MatHelp - Installation script for automatic generation of the on-line help 
 %
 %Installation script for automatic generation of the on-line documentation
@@ -6,7 +6,12 @@ function make_help(verbose,dirinit,redminepath,texfilelist,excludedfoldernames,h
 %
 % INPUT:
 %
-%	- verbose: display the output of the documentation build-up is not empty
+%	- verbose: display the output of the documentation build-up (on/off). Empty is off.
+%	- dirinit: path to the folder from which Help must be self-generated
+%	- outputpath: path to the self-generated Help folder
+%	- texfilelist: 
+%	- excludedfoldernames: list of folders that are not considered in the self-generated Help
+%	- helptools: 
 %
 % OUTPUT: none
 %
@@ -15,18 +20,18 @@ function make_help(verbose,dirinit,redminepath,texfilelist,excludedfoldernames,h
 if nargin == 0,
     verbose = 'off';
     dirinit = pwd;
-    redminepath = '.';
+    outputpath = [dirinit,'/Help'];
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
 elseif nargin == 1,
     dirinit = pwd;
-    redminepath = '.';
+    outputpath = [dirinit,'/Help'];
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
 elseif nargin == 2,
-    redminepath = '.';
+    outputpath = '/Help';
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
@@ -148,7 +153,7 @@ if strcmp(dirinit(end),'/'),dirinit = dirinit(1:end-1);end
 %
 make_index_html(dirname,m2htmllib_path);
 %
-overview_scripts = make_codeoverview_html(dirinit,dirname,redminepath,texfilelist,m2htmllib_path)
+overview_scripts = make_codeoverview_html(dirinit,dirname,outputpath,texfilelist,m2htmllib_path)
 %
 if ~s_htlatex == 0 && ~s_pdflatex == 0 && ~s_imagemagick == 0,
     texfilelist = '';%no tex file can be used
@@ -182,7 +187,7 @@ for j = 1:length(search_path),
     end
 end
 %
-htmldocbuilder_yp('off',dirinit,search_path,redminepath,excludedfoldernames,overview_scripts,verbose);%build html doc
+htmldocbuilder_yp('off',dirinit,search_path,outputpath,excludedfoldernames,overview_scripts,verbose);%build html doc
 %
 pause(2);
 %
