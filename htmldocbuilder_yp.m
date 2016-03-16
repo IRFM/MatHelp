@@ -1,4 +1,4 @@
-function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,redminepath,excludedfoldernames,overview_scripts,verbose)
+function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,outputpath,excludedfoldernames,overview_scripts,verbose)
 %MatHelp - HTML help builder
 %
 % Create dynamically all the help in html format from *.m, *.c, *.f and *.h text files. Recognize binary files. 
@@ -14,7 +14,7 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,re
 %       (default: local directory)
 %   - search_path: list subdirectories to be scanned (relative path to root_path) (cells of strings)
 %       (default: all subdirectories are scanned recursively)
-%   - redmine_path: path to the redmine server (string)
+%   - outputpath: output path (string)
 %       (default: local directory)
 %   - excludedfoldernames: list excluded folder names is the build-in search_path (cells of strings)
 %       (default: empty)
@@ -49,7 +49,7 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,re
     end
     if nargin <=3,
         search_path = {};
-        redminepath = '.';
+        outputpath = '.';
         excludedfoldernames = {};
         verbose = 'off';
     end
@@ -94,9 +94,9 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,re
     end
     %
     try
-        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',redminepath,'recursive','off','global','on', 'template','help','index','menu','graph','on','todo','on');
+        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',outputpath,'recursive','off','global','on', 'template','help','index','menu','graph','on','todo','on');
     catch
-        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',redminepath,'recursive','off','global','on', 'template','help','index','menu','graph','off','todo','on');%if graphviz not installed
+        m2html('verbose',verbose,'mfiles',search_path, 'htmldir',dochtmlpath,'redminedir',outputpath,'recursive','off','global','on', 'template','help','index','menu','graph','off','todo','on');%if graphviz not installed
         %
         disp('WARNING: Graphs have not been generated, since the ''graphviz'' maker is not installed on your computer.');
         disp('WARNING: Download ''graphviz'' maker from www.graphviz.org, and install it first.');
