@@ -25,11 +25,7 @@ disp('</head>');
 disp('<body>');
 disp('<a name="_top"></a>');
 %
-if exist(fullfile(dirinit,'TUTORIAL','package.html'),'file')
-    disp(['<h1><A HREF="',dirinit,'/Help/package.html" target=function>',dirname,' package</A></h1>']);
-else
-    disp(['<h1>',dirname,' package</h1>']);
-end
+disp(['<h1>',dirname,' package</h1>']);
 %
 disp('');
 %
