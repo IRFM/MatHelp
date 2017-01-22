@@ -101,8 +101,7 @@ if ~isempty(texfilelist)
     disp('');
 end
 %
-disp(['<hr><address>Community support and wiki are available on <strong><a href="',redminepath,'" target="_blank">Redmine</a></strong>.</address>']);
-disp(['Last update: ',date])
+disp(['<hr><address>Community support and wiki are available on <strong><a href="',redminepath,'" target="_blank">Redmine</a></strong>.<br>Last update: ',date,'</address>']);
 %
 disp('</body>');
 disp('</html>');
