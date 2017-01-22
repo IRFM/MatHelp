@@ -17,6 +17,11 @@ function make_help(verbose,dirinit,redminepath,texfilelist,excludedfoldernames,h
 %
 %By Yves Peysson (CEA/DSM/IRFM, yves.peysson@cea.fr) and Joan Decker (CEA/DSM/IRFM, joan.decker@cea.fr)
 %
+warning off
+disp('-------------------------------------');
+disp('WARNING: Matlab warining are disabled');
+disp('-------------------------------------');
+%
 if nargin == 0,
     verbose = 'off';
     dirinit = pwd;
