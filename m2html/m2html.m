@@ -508,6 +508,7 @@ for i=1:prod(size(ind))
 	end
 end
 tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
+tpl = set(tpl,'var','TIMEUPDATE',date);
 
 
 %- Print the template in the HTML file
