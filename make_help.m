@@ -19,7 +19,7 @@ function make_help(verbose,dirinit,redminepath,texfilelist,excludedfoldernames,h
 %
 warning off
 disp('-------------------------------------');
-disp('WARNING: Matlab warining are disabled');
+disp('WARNING: Matlab warning are disabled');
 disp('-------------------------------------');
 %
 if nargin == 0,
