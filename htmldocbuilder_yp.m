@@ -1,5 +1,5 @@
 function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,redminepath,excludedfoldernames,overview_scripts,verbose)
-%MatHelp - HTML help builder
+%MatHelp - HTML help builderzz
 %
 % Create dynamically all the help in html format from *.m, *.c, *.f and *.h text files. Recognize binary files. 
 % If a TODO comment is written somewhere, it is considered in the links.
