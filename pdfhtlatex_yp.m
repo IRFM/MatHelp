@@ -16,7 +16,7 @@ function pdfhtlatex_yp(root_path,filelist,verbose)
 %
 % OUTPUT: none
 %
-% by Y. PEYSSON (CEA/DSM/IRFM, yves.peysson@cea.fr) and J. DECKER (CEA/DSM/IRFM, joan.decker@cea.fr)
+% by Y. PEYSSON (CEA-IRFM, yves.peysson@cea.fr) and J. DECKER (CEA-IRFM, joan.decker@cea.fr)
 %
     flag = 0;
     %
@@ -209,10 +209,6 @@ function [search_path] = delete_cvsdir_yp(root_path,search_path)
             search_path = [search_path,[root_path,dirlist(ii).name]];
             nsearch_path = nsearch_path + 1;%a valid new directory has been found
         end
-    end 
-    %
-    if exist('CVS','dir') == 7,%a CVS directory exists in the rootdir
-        rmdir('CVS','s');
     end    
     %
     for ii = nsearch_path0+1:nsearch_path,
