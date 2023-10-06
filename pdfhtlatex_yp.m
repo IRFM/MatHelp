@@ -110,10 +110,6 @@ function pdfhtlatex_yp(root_path,filelist,verbose)
             %
             cd(destination_dir);
             %
-            % Delete recursively possible CVS directories
-            %
-            delete_cvsdir_yp(destination_dir);
-            %
             try
                 if ~unix('which htlatex') && ~unix('which convert')
                     if isempty(verbose)
@@ -170,47 +166,4 @@ function pdfhtlatex_yp(root_path,filelist,verbose)
     %
 end
 
-function [search_path] = delete_cvsdir_yp(root_path,search_path)
-%LUKE - Recursive directory scan
-%
-% Recursive delete of all CVS directories from root directory
-%
-% INPUT:
-%
-%   - root_path: absolute directory path name to be scanned (string)
-%   - search_path: list of subdirectories (cell of strings)
-%
-% OUTPUT:
-%
-%   - search_path: structure of subdirectories scanned (not equal to input when recursive option is 'on') (structure)
-%
-% by Y. PEYSSON (CEA-IRFM, yves.peysson@cea.fr) and J. DECKER (CEA-IRFM, joan.decker@cea.fr)
-%
-    if nargin == 0,
-        error('The root_path of the folder to be scanned must be given as input delete_cvsdir_yp.m !');
-    end
-    if nargin == 1,
-        search_path = {};
-    end
-    %
-    dirinit = pwd;%record the active directory name
-    %
-    if ~strcmp(root_path(end),filesep),
-        root_path = [root_path,filesep];%root_path must be ended by a filesep
-    end
-    %
-    cd(root_path);%move to the root folder to be scanned
-    dirlist = dir;
-    nsearch_path0 = length(search_path);
-    nsearch_path = nsearch_path0;
-    %
-    for ii = 1:length(dirlist),
-        if dirlist(ii).isdir == 1 & ~strcmp(dirlist(ii).name(1),'.')
-            search_path = [search_path,[root_path,dirlist(ii).name]];
-            nsearch_path = nsearch_path + 1;%a valid new directory has been found
-        end
-    end    
-    %
-    cd(dirinit);%back to the initial active directory
-end
 
