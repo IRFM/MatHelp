@@ -184,7 +184,7 @@ function [search_path] = delete_cvsdir_yp(root_path,search_path)
 %
 %   - search_path: structure of subdirectories scanned (not equal to input when recursive option is 'on') (structure)
 %
-% by Y. PEYSSON (CEA/DSM/IRFM, yves.peysson@cea.fr) and J. DECKER (CEA/DSM/IRFM, joan.decker@cea.fr)
+% by Y. PEYSSON (CEA-IRFM, yves.peysson@cea.fr) and J. DECKER (CEA-IRFM, joan.decker@cea.fr)
 %
     if nargin == 0,
         error('The root_path of the folder to be scanned must be given as input delete_cvsdir_yp.m !');
@@ -205,15 +205,11 @@ function [search_path] = delete_cvsdir_yp(root_path,search_path)
     nsearch_path = nsearch_path0;
     %
     for ii = 1:length(dirlist),
-        if dirlist(ii).isdir == 1 & ~strcmp(dirlist(ii).name(1),'.') & ~strcmp(dirlist(ii).name,'CVS'),
+        if dirlist(ii).isdir == 1 & ~strcmp(dirlist(ii).name(1),'.')
             search_path = [search_path,[root_path,dirlist(ii).name]];
             nsearch_path = nsearch_path + 1;%a valid new directory has been found
         end
     end    
-    %
-    for ii = nsearch_path0+1:nsearch_path,
-        [search_path] = delete_cvsdir_yp(search_path{ii},search_path);%recursive scan
-    end
     %
     cd(dirinit);%back to the initial active directory
 end
