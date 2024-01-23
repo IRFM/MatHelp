@@ -22,7 +22,7 @@ disp('-------------------------------------');
 disp('WARNING: Matlab warning are disabled');
 disp('-------------------------------------');
 %
-wikipath_default = 'https://forgejo.yvespeysson.fr';
+wikipath_default = 'https://forgejo.yvespeysson.fr/starwars';
 %
 if nargin == 0,
     verbose = 'off';
