@@ -58,6 +58,6 @@ This function is called by:
 <div class="fragment"><pre>{SOURCECODE}</pre></div>
 <!-- END source -->
 
-<hr><address>Community support and wiki are available on <strong><a href="{REDMINEPATH}" target="_blank">Redmine</a></strong>. Last update: {TIMEUPDATE}.</address>
+<hr><address>Community support and wiki are available on <strong><a href="{WIKIPATH}" target="_blank">Forgejo</a></strong>. Last update: {TIMEUPDATE}.</address>
 </body>
 </html>

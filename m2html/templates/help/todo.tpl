@@ -22,6 +22,6 @@
 	<!-- END row -->
 	</ul>
 <!-- END filelist -->
-<hr><address>Community support and wiki are available on <strong><a href="{REDMINEPATH}" target="_blank">Redmine</a></strong>.</address>
+<hr><address>Community support and wiki are available on <strong><a href="{WIKIPATH}" target="_blank">Forgejo</a></strong>.</address>
 </body>
 </html>
