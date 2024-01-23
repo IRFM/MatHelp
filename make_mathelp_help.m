@@ -45,10 +45,11 @@ helptools = '';%specific display tools (like TeX, GraphViz or ImageMagick which 
 texfilelist = '';
 %
 ref_folder = what('MatHelp');
-redminepath = 'https://spcsrv.epfl.ch/redmine';%path to the redmine website 
+%wikipath = 'https://spcsrv.epfl.ch/redmine';%path to the redmine website 
+wikipath = 'https://forgejo.yvespeysson.fr/starwars';%path to the forgejo website 
 %
-if isempty(redminepath),disp('WARNING: the ''redminepath'' path is empty.');end
+if isempty(wikipath),disp('WARNING: the ''wikipath'' path is empty.');end
 %
-make_help(verbose,ref_folder(1).path,redminepath,texfilelist,excludedfoldernames,helptools);
+make_help(verbose,ref_folder(1).path,wikipath,texfilelist,excludedfoldernames,helptools);
 %
 cd(dirinit);

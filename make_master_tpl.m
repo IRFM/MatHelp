@@ -83,7 +83,7 @@ disp('<!-- {L_IDNAME} {T_IDNAME} {IDNAME} -->');
 disp('<!-- END idcolumn -->');
 disp('<!-- END idrow -->');
 
-disp('<hr><address>Community support and wiki are available on <strong><a href="{REDMINEPATH}" target="_blank">Redmine</a></strong>.</address>');
+disp('<hr><address>Community support and wiki are available on <strong><a href="{WIKIPATH}" target="_blank">Forgejo</a></strong>.</address>');
 disp('</body>');
 disp('</html>');
 %

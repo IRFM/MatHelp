@@ -8,6 +8,7 @@ function m2html(varargin)
 %       list of M-files and/or directories of M-files for which an HTML
 %       documentation will be built [ '.' ]
 %    o htmlDir - Top level directory for generated HTML files [ '.' ]
+%    o wikiDir - connection to Redmine or Forgejo for wiki and community support [ '.' ]
 %    o recursive - Process subdirectories [ on | {off} ]
 %    o source - Include Matlab source code in the HTML documentation
 %                               [ {on} | off ]
@@ -103,7 +104,7 @@ msgInvalidPair = 'Bad value for argument: ''%s''';
 options = struct('verbose', 1,...
 				 'mFiles', {{'.'}},...
 				 'htmlDir', '.',...
-                 'redmineDir', '.',...
+                 'wikiDir', '.',...
 				 'recursive', 0,...
 				 'source', 1,...
 				 'syntaxHighlighting', 1,...
@@ -167,12 +168,12 @@ for i=1:2:length(paramlist)
 			else
 				error(sprintf(msgInvalidPair,pname));
             end
-		case 'redminedir'
+		case 'wikidir'
 			if ischar(pvalue)
 				if isempty(pvalue),
-					options.redmineDir = '.';
+					options.wikiDir = '.';
 				else
-					options.redmineDir = pvalue;
+					options.wikiDir = pvalue;
 				end
 			else
 				error(sprintf(msgInvalidPair,pname));
@@ -507,7 +508,7 @@ for i=1:prod(size(ind))
 		tpl = set(tpl,'var','idcolumns','');
 	end
 end
-tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
+tpl = set(tpl,'var','WIKIPATH',options.wikiDir);
 tpl = set(tpl,'var','TIMEUPDATE',date);
 
 
@@ -563,7 +564,7 @@ tpl = set(tpl,'block','TPL_MDIR','todolist','todolists');
 tpl = set(tpl,'block','TPL_MDIR','graph','graphs');
 tpl = set(tpl,'var','DATE',[datestr(now,8) ' ' datestr(now,1) ' ' ...
 							datestr(now,13)]);
-tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
+tpl = set(tpl,'var','WIKIPATH',options.wikiDir);
 tpl = set(tpl,'var','TIMEUPDATE',date);
 
 for i=1:length(mdir)
@@ -750,7 +751,7 @@ if options.todo
 			tpl = set(tpl,'var','INDEX',[options.indexFile options.extension]);
 			tpl = set(tpl,'var','MASTERPATH', backtomaster(mdir{i}));
 			tpl = set(tpl,'var','MDIR',       mdir{i});
-            tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
+            tpl = set(tpl,'var','WIKIPATH',options.wikiDir);
             tpl = set(tpl,'var','TIMEUPDATE',date);
 			tpl = set(tpl,'var','filelists',  '');
 	
@@ -791,7 +792,7 @@ if options.graph
 	tpl = set(tpl,'file','TPL_GRAPH',tpl_graph);
 	tpl = set(tpl,'var','DATE',[datestr(now,8) ' ' datestr(now,1) ' ' ...
 								datestr(now,13)]);
-    tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
+    tpl = set(tpl,'var','WIKIPATH',options.wikiDir);
     tpl = set(tpl,'var','TIMEUPDATE',date);
 	
 	for i=1:length(mdir)
@@ -935,7 +936,7 @@ for i=1:length(mdir)
 			tpl = set(tpl,'var','NAME',             names{j});
 			tpl = set(tpl,'var','H1LINE',           h1line{j});
 			tpl = set(tpl,'var','scriptfile',       '');
-            tpl = set(tpl,'var','REDMINEPATH',options.redmineDir);
+            tpl = set(tpl,'var','WIKIPATH',options.wikiDir);
             tpl = set(tpl,'var','TIMEUPDATE',date);
 			if isempty(synopsis{j})
 				tpl = set(tpl,'var','SYNOPSIS',get(tpl,'var','script'));
