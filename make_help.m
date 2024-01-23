@@ -22,21 +22,23 @@ disp('-------------------------------------');
 disp('WARNING: Matlab warning are disabled');
 disp('-------------------------------------');
 %
+wikipath_default = 'https://forgejo.yvespeysson.fr';
+%
 if nargin == 0,
     verbose = 'off';
     dirinit = pwd;
-    wikipath = pwd;
+    wikipath = wikipath_default;
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
 elseif nargin == 1,
     dirinit = pwd;
-    wikipath = pwd;
+    wikipath = wikipath_default;
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
 elseif nargin == 2,
-    wikipath = pwd;
+    wikipath = wikipath_default;
     texfilelist = '';
     excludedfoldernames = '';
     helptools = '';
