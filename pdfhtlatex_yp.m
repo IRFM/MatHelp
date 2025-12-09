@@ -1,5 +1,19 @@
+% /////////////////////////////////////////
+%
+% Software name : MatHelp, part of LUKE
+%
+% Authors : Yves Savoye-Peysson and Joan Decker
+%
+% Copyright holders : Commissariat a l'Energie Atomique et aux Energies Alternatives (CEA), France
+%
+% CEA authorizes the use of the LUKE software under the CeCILL-C open source license https://cecill.info/licences/Licence_CeCILL-C_V1-en.html  
+%
+% The terms and conditions of the CeCILL-C license are deemed to be accepted upon downloading the software and/or exercising any of the rights granted under the CeCILL-C license.
+% 
+% /////////////////////////////////////////
+%
 function pdfhtlatex_yp(root_path,filelist,verbose)
-%LUKE - LaTeX to PDF and HTML LUKE help builder
+%LUKE/Mathelp - LaTeX to PDF and HTML LUKE help builder
 %
 % Create dynamically all the help for C3PO/LUKE in html format from Latex files
 % (needs standard TeX package with TeX4ht. TeXLive 2007 or above package is strongly recommanded)
@@ -16,7 +30,7 @@ function pdfhtlatex_yp(root_path,filelist,verbose)
 %
 % OUTPUT: none
 %
-% by Y. PEYSSON (CEA-IRFM, yves.peysson@cea.fr) and J. DECKER (CEA-IRFM, joan.decker@cea.fr)
+% by Y.Savoye-Peysson CEA <yves.savoye-peysson@cea.fr> and Joan Decker EPFL (joan.decker@epfl.ch)
 %
     flag = 0;
     %

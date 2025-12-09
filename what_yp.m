@@ -1,5 +1,19 @@
+% /////////////////////////////////////////
+%
+% Software name : MatHelp, part of LUKE
+%
+% Authors : Yves Savoye-Peysson and Joan Decker
+%
+% Copyright holders : Commissariat a l'Energie Atomique et aux Energies Alternatives (CEA), France
+%
+% CEA authorizes the use of the LUKE software under the CeCILL-C open source license https://cecill.info/licences/Licence_CeCILL-C_V1-en.html  
+%
+% The terms and conditions of the CeCILL-C license are deemed to be accepted upon downloading the software and/or exercising any of the rights granted under the CeCILL-C license.
+% 
+% /////////////////////////////////////////
+%
 function s = what_yp(folder)
-%LUKE - Extension of WHAT MatLab built-in command
+%LUKE/MatHelp - Extension of WHAT MatLab built-in command
 %
 % This function extends the built-in MatLab command WHAT for listing *.c,
 % *.h,*.f and *.sh type files. The recognized extensions are
@@ -11,7 +25,7 @@ function s = what_yp(folder)
 %
 % Useful for the automatic documentation builder.
 %
-% by Y.Peysson <CEA/DSM/IRFM, yves.peysson@cea.fr> and J. Decker <CEA/DSM/IRFM, joan.decker@cea.fr>
+% by Y.Savoye-Peysson CEA <yves.savoye-peysson@cea.fr> and Joan Decker EPFL (joan.decker@epfl.ch)
 %
 dirinit = pwd;%initial directory
 %
