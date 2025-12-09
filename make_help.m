@@ -1,5 +1,19 @@
+% /////////////////////////////////////////
+%
+% Software name : MatHelp, part of LUKE
+%
+% Authors : Yves Savoye-Peysson and Joan Decker
+%
+% Copyright holders : Commissariat a l'Energie Atomique et aux Energies Alternatives (CEA), France
+%
+% CEA authorizes the use of the LUKE software under the CeCILL-C open source license https://cecill.info/licences/Licence_CeCILL-C_V1-en.html  
+%
+% The terms and conditions of the CeCILL-C license are deemed to be accepted upon downloading the software and/or exercising any of the rights granted under the CeCILL-C license.
+% 
+% /////////////////////////////////////////
+%
 function make_help(verbose,dirinit,wikipath,texfilelist,excludedfoldernames,helptools)
-%MatHelp - Installation script for automatic generation of the on-line help 
+%LUKE/MatHelp - Installation script for automatic generation of the on-line help 
 %
 %Installation script for automatic generation of the on-line documentation
 %(pdflatex and tex4html required for a complete build of the documentation)
@@ -15,7 +29,7 @@ function make_help(verbose,dirinit,wikipath,texfilelist,excludedfoldernames,help
 %
 % OUTPUT: none
 %
-%By Yves Peysson (CEA/DSM/IRFM, yves.peysson@cea.fr) and Joan Decker (CEA/DSM/IRFM, joan.decker@cea.fr)
+% by Y.Savoye-Peysson CEA <yves.savoye-peysson@cea.fr> and Joan Decker EPFL (joan.decker@epfl.ch)
 %
 warning off
 disp('-------------------------------------');

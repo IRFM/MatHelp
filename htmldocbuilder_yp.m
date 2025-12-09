@@ -1,5 +1,19 @@
+% /////////////////////////////////////////
+%
+% Software name : MatHelp, part of LUKE
+%
+% Authors : Yves Savoye-Peysson and Joan Decker
+%
+% Copyright holders : Commissariat a l'Energie Atomique et aux Energies Alternatives (CEA), France
+%
+% CEA authorizes the use of the LUKE software under the CeCILL-C open source license https://cecill.info/licences/Licence_CeCILL-C_V1-en.html  
+%
+% The terms and conditions of the CeCILL-C license are deemed to be accepted upon downloading the software and/or exercising any of the rights granted under the CeCILL-C license.
+% 
+% /////////////////////////////////////////
+%
 function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,wikipath,excludedfoldernames,overview_scripts,verbose)
-%MatHelp - HTML help builder
+%LUKE/MatHelp - HTML help builder
 %
 % Create dynamically all the help in html format from *.m, *.c, *.f and *.h text files. Recognize binary files. 
 % If a TODO comment is written somewhere, it is considered in the links.
@@ -33,7 +47,7 @@ function search_path = htmldocbuilder_yp(recursive_mode,root_path,search_path,wi
 %   - overview_scripts.path: absolute path
 %   - overview_scripts.format = 'doc', 'html', 'latex', 'ppt', 'xml' (no field or empty for m-files)
 %
-% by Y. PEYSSON (CEA/DSM/IRFM, yves.peysson@cea.fr) and J. DECKER (CEA/DSM/IRFM, joan.decker@cea.fr)
+% by Y.Savoye-Peysson CEA <yves.savoye-peysson@cea.fr> and Joan Decker EPFL (joan.decker@epfl.ch)
 %
     if nargin == 0,
         error('The modified m2html library absolute path must be specified as input parameter for htmldocbuilder_yp !');
